@@ -7,6 +7,9 @@ let routes = [
 	{
 		// will match everything
 		path: '*',
+		// @ts-ignore
+		layout: "dashboard",
+
 		component: () => import('../views/404.vue'),
 	},
 	{
@@ -21,24 +24,28 @@ let routes = [
 		// route level code-splitting
 		// this generates a separate chunk (about.[hash].js) for this route
 		// which is lazy-loaded when the route is visited.
+		// @ts-ignore
 		component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue'),
 	},
 	{
 		path: '/layout',
 		name: 'Layout',
 		layout: "dashboard",
+		// @ts-ignore
 		component: () => import('../views/Layout.vue'),
 	},
 	{
 		path: '/tables',
 		name: 'Tables',
 		layout: "dashboard",
+		// @ts-ignore
 		component: () => import('../views/Tables.vue'),
 	},
 	{
 		path: '/customers',
 		name: 'customer',
 		layout: "dashboard",
+		// @ts-ignore
 		component: () => import('../views/customers.vue'),
 
 	},
@@ -47,6 +54,7 @@ let routes = [
 		path: '/listShops',
 		name: 'listShop',
 		layout: "dashboard",
+		// @ts-ignore
 		component: () => import('../views/listShops.vue'),
 
 	},
@@ -54,6 +62,7 @@ let routes = [
 		path: '/Transctions',
 		name: 'transctions',
 		layout: "dashboard",
+		// @ts-ignore
 		component: () => import('../views/Transctions.vue'),
 
 	},
@@ -61,8 +70,22 @@ let routes = [
 		path: '/billing',
 		name: 'Billing',
 		layout: "dashboard",
+		// @ts-ignore
 		component: () => import('../views/Billing.vue'),
 	},
+	{path: '/products',
+	name: 'products',
+	layout: "dashboard",
+	// @ts-ignore
+	component: () => import('../views/Listproducts.vue')
+},
+
+	{path: '/Staff',
+	name: 'Staff',
+	layout: "dashboard",
+	// @ts-ignore
+	component: () => import('../views/Liststaff.vue')
+},
 	{
 		path: '/rtl',
 		name: 'RTL',   
@@ -70,6 +93,7 @@ let routes = [
 		meta: {
 			layoutClass: 'dashboard-rtl',
 		},
+		// @ts-ignore
 		component: () => import('../views/RTL.vue'),
 	},
 	{
@@ -79,11 +103,13 @@ let routes = [
 		meta: {
 			layoutClass: 'layout-profile',
 		},
+		// @ts-ignore
 		component: () => import('../views/Profile.vue'),
 	},
 	{
 		path: '/sign-in',
 		name: 'Sign-In',
+		// @ts-ignore
 		component: () => import('../views/Sign-In.vue'),
 	},
 	{
@@ -92,6 +118,7 @@ let routes = [
 		meta: {
 			layoutClass: 'layout-sign-up',
 		},
+		// @ts-ignore
 		component: () => import('../views/Sign-Up.vue'),
 	},
 ]
@@ -114,8 +141,10 @@ routes = routes.map( ( route ) => addLayoutToRoute( route ) ) ;
 
 const router = new VueRouter({
 	mode: 'hash',
+	// @ts-ignore
 	base: process.env.BASE_URL,
 	routes,
+	// @ts-ignore
 	scrollBehavior (to, from, savedPosition) {
 		if ( to.hash ) {
 			return {
