@@ -36,6 +36,28 @@ let routes = [
 		component: () => import('../views/Tables.vue'),
 	},
 	{
+		path: '/customers',
+		name: 'customer',
+		layout: "dashboard",
+		component: () => import('../views/customers.vue'),
+
+	},
+	
+	{
+		path: '/listShops',
+		name: 'listShop',
+		layout: "dashboard",
+		component: () => import('../views/listShops.vue'),
+
+	},
+	{
+		path: '/Transctions',
+		name: 'transctions',
+		layout: "dashboard",
+		component: () => import('../views/Transctions.vue'),
+
+	},
+	{
 		path: '/billing',
 		name: 'Billing',
 		layout: "dashboard",
@@ -43,7 +65,7 @@ let routes = [
 	},
 	{
 		path: '/rtl',
-		name: 'RTL',
+		name: 'RTL',   
 		layout: "dashboard-rtl",
 		meta: {
 			layoutClass: 'dashboard-rtl',
