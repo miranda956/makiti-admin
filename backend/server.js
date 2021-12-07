@@ -4,7 +4,7 @@ import  methodoverride from 'method-override';
 import logger from 'morgan';
 import  session from 'express-session';
 import  path from 'path';
-import  require'cors';
+import cors  from 'cors';
 
 const PORT=process.env.PORT||5000;
 
