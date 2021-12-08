@@ -155,7 +155,7 @@ export const productMutations = {
 
 
   
-  export const astaffMutations = {
+  export const staffMutations = {
     [ALL_STAFF] (state) {
       
       state.showLoader = true
@@ -198,8 +198,17 @@ export const productMutations = {
         return p
       })
     },
-  
+    [REMOVE_STAFF]: (state) => {
+      state.showLoader = true
+    },
+    [REMOVE_STAFF_SUCESS]: (state, payload) => {
+      state.showLoader = false
+      const index = state.staff.findIndex(j => j._id === payload)
+      console.debug('index', index)
+      state.staff.splice(index, 1)
+    }
   }
+  
  
   export const customerMutations = {
     // not yet done 
