@@ -66,13 +66,7 @@ let routes = [
 		component: () => import('../views/Transctions.vue'),
 
 	},
-	{
-		path: '/billing',
-		name: 'Billing',
-		layout: "dashboard",
-		// @ts-ignore
-		component: () => import('../views/Billing.vue'),
-	},
+
 	{path: '/products',
 	name: 'products',
 	layout: "dashboard",
@@ -86,17 +80,47 @@ let routes = [
 	// @ts-ignore
 	component: () => import('../views/Liststaff.vue')
 },
-	{
-		path: '/rtl',
-		name: 'RTL',   
-		layout: "dashboard-rtl",
-		meta: {
-			layoutClass: 'dashboard-rtl',
-		},
-		// @ts-ignore
-		component: () => import('../views/RTL.vue'),
-	},
-	{
+	
+{path: '/addShop',
+name: 'addShop',
+layout: "dashboard",
+// @ts-ignore
+component: () => import('../views/addShop.vue')
+},
+	
+{path: '/editProduct',
+name: 'editProduct',
+layout: "dashboard",
+// @ts-ignore
+component: () => import('../views/editProduct.vue')
+},
+
+{path: '/editShop',
+name: 'editShop',
+layout: "dashboard",
+// @ts-ignore
+component: () => import('../views/editShop.vue')
+},
+
+{path: '/editStaff',
+name: 'editStaff',
+layout: "dashboard",
+// @ts-ignore
+component: () => import('../views/editStaff.vue')
+},
+{path: '/NewProduct',
+name: 'NewProduct',
+layout: "dashboard",
+// @ts-ignore
+component: () => import('../views/NewProduct.vue')
+},
+{path: '/NewStaff',
+name: 'NewStaff',
+layout: "dashboard",
+// @ts-ignore
+component: () => import('../views/Newstaff.vue')
+},
+{
 		path: '/Profile',
 		name: 'Profile',
 		layout: "dashboard",
@@ -105,22 +129,21 @@ let routes = [
 		},
 		// @ts-ignore
 		component: () => import('../views/Profile.vue'),
-	},
-	{
+},
+{
 		path: '/sign-in',
 		name: 'Sign-In',
 		// @ts-ignore
 		component: () => import('../views/Sign-In.vue'),
-	},
-	{
-		path: '/sign-up',
-		name: 'Sign-Up',
-		meta: {
-			layoutClass: 'layout-sign-up',
-		},
-		// @ts-ignore
-		component: () => import('../views/Sign-Up.vue'),
-	},
+},
+{
+	path: '/reports',
+	name: 'reports',
+	layout: "dashboard",
+	// @ts-ignore
+	component: () => import('../views/reports.vue'),
+},
+
 ]
 
 // Adding layout property from each route to the meta
