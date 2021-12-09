@@ -12,11 +12,12 @@ let routes = [
 
 		component: () => import('../views/404.vue'),
 	},
-	{
+/*	{
 		path: '/',
 		name: 'Home',
 		redirect: '/dashboard',
 	},
+	*/
 	{
 		path: '/dashboard',
 		name: 'Dashboard',
@@ -66,6 +67,7 @@ let routes = [
 		component: () => import('../views/Transctions.vue'),
 
 	},
+	
 
 	{path: '/products',
 	name: 'products',
@@ -112,7 +114,7 @@ component: () => import('../views/editStaff.vue')
 name: 'NewProduct',
 layout: "dashboard",
 // @ts-ignore
-component: () => import('../views/NewProduct.vue')
+component: () => import('../views/Newproduct.vue')
 },
 {path: '/NewStaff',
 name: 'NewStaff',
@@ -131,7 +133,7 @@ component: () => import('../views/Newstaff.vue')
 		component: () => import('../views/Profile.vue'),
 },
 {
-		path: '/sign-in',
+		path: '/',
 		name: 'Sign-In',
 		// @ts-ignore
 		component: () => import('../views/Sign-In.vue'),

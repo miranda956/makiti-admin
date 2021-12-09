@@ -42,49 +42,11 @@
 		<!-- / Charts -->
 
 		<!-- Table & Timeline -->
-		<a-row :gutter="24" type="flex" align="stretch">
-			<!-- Table -->
-			<a-col :span="24" :lg="16" class="mb-24">
-				
-				<!-- Projects Table Card -->
-				<CardProjectTable
-					:data="tableData"
-					:columns="tableColumns"
-				></CardProjectTable>
-				<!-- / Projects Table Card -->
-				
-			</a-col>
-			<!-- / Table -->
-
-			<!-- Timeline -->
-			<a-col :span="24" :lg="8" class="mb-24">
-
-				<!-- Orders History Timeline Card -->
-				<CardOrderHistory></CardOrderHistory>
-				<!-- / Orders History Timeline Card -->
-
-			</a-col>
-			<!-- / Timeline -->
-		</a-row>
+		
 		<!-- / Table & Timeline -->
 
 		<!-- Cards -->
-		<a-row :gutter="24" type="flex" align="stretch">
-			<a-col :span="24" :xl="14" class="mb-24">
-
-				<!-- Information Card 1 -->
-				<CardInfo></CardInfo>
-				<!-- / Information Card 1 -->
-
-			</a-col>
-			<a-col :span="24" :xl="10" class="mb-24">
-
-				<!-- Information Card 2 -->
-				<CardInfo2></CardInfo2>
-				<!-- / Information Card 2 -->
-
-			</a-col>
-		</a-row>
+	
 		<!-- / Cards -->
 
 	</div>

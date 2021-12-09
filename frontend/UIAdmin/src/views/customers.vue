@@ -1,295 +1,151 @@
-<!-- 
-	This is the tables page, it uses the dashboard layout in: 
-	"./layouts/Dashboard.vue" .
- -->
-
 <template>
-	<div>
-
-		<!-- Authors customers -->
-		<a-row :gutter="24" type="flex">
-
-			<!-- Authors Table Column -->
-			<a-col :span="24" class="mb-24">
-
-				<!-- Authors Table Card -->
-				<CardAuthorTable
-					:data="table1Data"
-					:columns="table1Columns"
-				></CardAuthorTable>
-				<!-- / Authors Table Card -->
-
-			</a-col>
-			<!-- / Authors Table Column -->
-
-		</a-row>
-		<!-- / Authors Table -->
-
-		<!-- Projects Table -->
-		<a-row :gutter="24" type="flex">
-
-			<!-- Projects Table Column -->
-			<a-col :span="24" class="mb-24">
-
-				<!-- Projects Table Column -->
-			
-
-			</a-col>
-			<!-- / Projects Table Column -->
-
-		</a-row>
-		<!-- / Projects Table -->
-
-	</div>
+  <div class="row">
+    <div class="col-md-12 pro-feature alert alert-danger">
+      
+      </div>
+    <div class="col-md-12 card mt-3">
+      <div class="card-header">
+        <div class="category">Users list</div>
+        <div class="text-right mb-3">
+          <p-button @click="onProFeature()" class="mt-3" type="primary">Add User</p-button>
+        </div>
+      </div>
+      <div class="card-body row">
+        <div class="col-sm-6">
+          <el-select
+            class="select-default"
+            v-model="pagination.perPage"
+            placeholder="Per page">
+            <el-option
+              class="select-default"  
+              v-for="item in pagination.perPageOptions"
+              :key="item"
+              :label="item"
+              :value="item">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="col-sm-6">
+          <div class="pull-right">
+            <fg-input class="input-sm"
+                      placeholder="Search"
+                      v-model="query"
+                      addon-right-icon="nc-icon nc-zoom-split">
+            </fg-input>
+          </div>
+        </div>
+        <div class="col-sm-12 mt-2">
+          <el-table class="table-striped" :data="users" border @sort-change="sortChange">
+            <el-table-column label="Name" prop="name" sortable="custom" />
+            <el-table-column label="Email" prop="email" sortable="custom" />
+            <el-table-column
+              label="Created At"
+              prop="created_at"
+              sortable="custom"
+            />
+            <el-table-column
+              fixed="right"
+              class-name="td-actions"
+              label="Actions">
+              <template slot-scope="props">
+                <p-button type="success" size="sm" icon @click="onProFeature()">
+                  <i class="fa fa-edit"></i>
+                </p-button>
+                <p-button type="danger" size="sm" icon @click="onProFeature()">
+                  <i class="fa fa-times"></i>
+                </p-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div class="col-sm-6 pagination-info">
+          <p class="category">Showing {{from + 1}} to {{to}} of {{total}} entries</p>
+        </div>
+        <div class="col-sm-6">
+          <p-pagination class="pull-right"
+                        v-model="pagination.currentPage"
+                        :per-page="pagination.perPage"
+                        :total="total">
+          </p-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
-
 <script>
+  import _ from 'lodash';
+  import { Table, TableColumn, Select, Option } from 'element-ui';
+  import swal from "sweetalert2";
 
-	// "Authors" table component.
-	import CardAuthorTable from '../components/Cards/CardAuthorTable' ;
+  export default {
+    components: {
+      PPagination,
+      [Select.name]: Select,
+      [Option.name]: Option,
+      [Table.name]: Table,
+      [TableColumn.name]: TableColumn
+    },
 
-	// "Projects" table component.
-	import CardProjectTable2 from '../components/Cards/CardProjectTable2' ;
-	
-	// "Authors" table list of columns and their properties.
-	const table1Columns = [
-		{
-			title: 'Name',
-			dataIndex: '',
-			scopedSlots: { customRender: 'customer' },
-		},
-		{
-			title: 'Contact',
-			dataIndex: 'contact',
-			scopedSlots: { customRender: 'contact' },
-		},
-		{
-			title: 'STATUS',
-			dataIndex: 'status',
-			scopedSlots: { customRender: 'status' },
-		},
-		{
-			title: 'Email',
-			dataIndex: 'Email',
-			class: 'text-muted',
-		},
-        	{
-			title: 'Lastseen',
-			dataIndex: 'Lastseen',
-            scopedSlots: { customRender: 'lastseen' },
+    data: () => ({
+      users: [],
+      footerTable: ["Name", "Created At", "Actions"],
 
-		},
-		
-	];
+      query: null,
 
-	// "Authors" table list of rows and their properties.
-	const table1Data = [
-		{
-			key: '1',
-			author: {
-				avatar: 'images/face-2.jpg',
-				name: 'Michael John',
-				email: 'michael@mail.com',
-			},
-			func: {
-				job: 'Manager',
-				department: 'Organization',
-			},
-			employed: '23/04/18',
-		},
-		{
-			key: '2',
-			author: {
-				avatar: 'images/face-3.jpg',
-				name: 'Alexa Liras',
-				email: 'alexa@mail.com',
-			},
-			func: {
-				job: 'Programator',
-				department: 'Developer',
-			},
-			employed: '23/12/20',
-		},
-		{
-			key: '3',
-			author: {
-				avatar: 'images/face-1.jpg',
-				name: 'Laure Perrier',
-				email: 'laure@mail.com',
-			},
-			func: {
-				job: 'Executive',
-				department: 'Projects',
-			},
-			employed: '13/04/19',
-		},
-		{
-			key: '4',
-			author: {
-				avatar: 'images/face-4.jpg',
-				name: 'Miriam Eric',
-				email: 'miriam@mail.com',
-			},
-			func: {
-				job: 'Marketing',
-				department: 'Organization',
-			},
-			employed: '03/04/21',
-		},
-		{
-			key: '5',
-			author: {
-				avatar: 'images/face-5.jpeg',
-				name: 'Richard Gran',
-				email: 'richard@mail.com',
-			},
-			func: {
-				job: 'Manager',
-				department: 'Organization',
-			},
-			employed: '23/03/20',
-		},
-		{
-			key: '6',
-			author: {
-				avatar: 'images/face-6.jpeg',
-				name: 'John Levi',
-				email: 'john@mail.com',
-			},
-			func: {
-				job: 'Tester',
-				department: 'Developer',
-			},
-			employed: '14/04/17',
-		},
-	];
-	
-	// "Projects" table list of columns and their properties.
-	const table2Columns = [
-		{
-			title: 'COMPANIES',
-			dataIndex: 'company',
-			scopedSlots: { customRender: 'company' },
-			width: 300,
-		},
-		{
-			title: 'BUDGET',
-			dataIndex: 'budget',
-			class: 'font-semibold text-muted',
-		},
-		{
-			title: 'STATUS',
-			dataIndex: 'status',
-			class: 'font-semibold text-muted text-sm',
-		},
-		{
-			title: 'COMPLETION',
-			scopedSlots: { customRender: 'completion' },
-			dataIndex: 'completion',
-		},
-		{
-			title: '',
-			scopedSlots: { customRender: 'editBtn' },
-			width: 50,
-		},
-	];
+      sort: "created_at",
 
-	// "Projects" table list of rows and their properties.
-	const table2Data = [
-		{
-			key: '1',
-			company: {
-				name: 'Spotify Version',
-				logo: 'images/logos/logo-spotify.svg',
-			},
-			status: "working",
-			budget: '$14,000',
-			completion: 60,
-		},
-		{
-			key: '2',
-			company: {
-				name: 'Progress Track',
-				logo: 'images/logos/logo-atlassian.svg',
-			},
-			status: "working",
-			budget: '$3,000',
-			completion: 10,
-		},
-		{
-			key: '3',
-			company: {
-				name: 'Jira Platform Errors',
-				logo: 'images/logos/logo-slack.svg',
-			},
-			status: "done",
-			budget: 'Not Set',
-			completion: {
-				status: 'success',
-				value: 100,
-			},
-		},
-		{
-			key: '4',
-			company: {
-				name: 'Launch new Mobile App',
-				logo: 'images/logos/logo-spotify.svg',
-			},
-			status: "canceled",
-			budget: '$20,600',
-			completion: {
-				status: 'exception',
-				value: 50,
-			},
-		},
-		{
-			key: '5',
-			company: {
-				name: 'Web Dev',
-				logo: 'images/logos/logo-webdev.svg',
-			},
-			status: "working",
-			budget: '$4,000',
-			completion: 80,
-		},
-		{
-			key: '6',
-			company: {
-				name: 'Redesign Online Store',
-				logo: 'images/logos/logo-invision.svg',
-			},
-			status: "canceled",
-			budget: '$2,000',
-			completion: {
-				status: 'exception',
-				value: 0,
-			},
-		},
-	];
+      pagination: {
+        perPage: 5,
+        currentPage: 1,
+        perPageOptions: [5, 10, 25, 50],
+      },
 
-	export default ({
-		components: {
-			CardAuthorTable,
-			CardProjectTable2,
-		},
-		data() {
-			return {
-				// Associating "Authors" table data with its corresponding property.
-				table1Data: table1Data,
+      total: 0
 
-				// Associating "Authors" table columns with its corresponding property.
-				table1Columns: table1Columns,
+    }),
 
-				// Associating "Projects" table data with its corresponding property.
-				table2Data: table2Data,
+    computed: {
+    from() {
+      return this.pagination.perPage * (this.pagination.currentPage - 1);
+    },
 
-				// Associating "Projects" table columns with its corresponding property.
-				table2Columns: table2Columns,
-			}
-		},
-	})
+    to() {
+      let highBound = this.from + this.pagination.perPage;
+      if (this.total < highBound) {
+        highBound = this.total;
+      }
+      return highBound;
+    },
+  },
 
+  created() {
+    this.getList();
+  },
+
+  methods: {
+    getList() {
+      this.users = [
+        {
+          name: "Admin",
+          email: "admin@jsonapi.com",
+          created_at: "2020-01-01",
+        },
+      ];
+    },
+    onProFeature() {
+      this.$notify({
+        type: "danger",
+        message: "This is a PRO feature.",
+      });
+    },
+    sortChange({ prop, order }) {
+      if (order === "descending") {
+        this.sort = `-${prop}`;
+      } else {
+        this.sort = `${prop}`;
+      }
+      this.getList();
+    },
+  },
+  }
 </script>
-
-<style lang="scss">
-</style>
