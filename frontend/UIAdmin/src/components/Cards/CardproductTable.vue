@@ -10,9 +10,18 @@
 				<a-col :span="24" :md="12" style="display: flex; align-items: center; justify-content: flex-end">
 					
 				</a-col>
+                			<div class="input-group">
+  <div class="form-outline">
+    <input id="search-input" type="search" class="form-control" />
+    <label class="form-label" for="form1">Search</label>
+  </div>
+  <button id="search-button" type="button" class="btn btn-primary">
+    <i class="fas fa-search"></i>
+  </button>
+</div>
 			</a-row>
 		</template>
-		<a-table :columns="columns" :data-source="data" :pagination="false">
+		<a-table :columns="columns" :data-source="data" :pagination="true">
 
 			<template slot="name" slot-scope="text">
 				<a>{{ text }}</a>

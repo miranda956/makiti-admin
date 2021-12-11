@@ -162,7 +162,6 @@
 			title: 'SHOP NAME',
 			dataIndex: 'SHOP NAME',
 			scopedSlots: { customRender: 'company' },
-			width: 300,
 		},
 		{
 			title: 'OWNER',

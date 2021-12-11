@@ -22,7 +22,6 @@
 			</a-row>
 		</template>
 		<a-table :columns="columns" :data-source="data" :pagination="false">
-          <button type="button" class="btn btn-primary">Normal</button>
 			<template slot="name" slot-scope="text">
 				<a>{{ text }}</a>
 			</template>

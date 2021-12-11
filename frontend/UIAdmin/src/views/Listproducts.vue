@@ -15,10 +15,10 @@
 			<a-col :span="24" class="mb-24">
 
 				<!-- Projects Table Column -->
-				<cardproduct-table
+				<CardProductTable
 					:data="table2Data"
 					:columns="table2Columns"
-				></cardproduct-table>
+				></CardProductTable>
 				<!-- / Projects Table Column -->
 
 			</a-col>
@@ -48,24 +48,23 @@
 	const table2Columns = [
 		{
 			title: 'PRODUCT NAME',
-			dataIndex: 'company',
+			dataIndex: 'PRODUCT NAME',
 			scopedSlots: { customRender: 'company' },
-			width: 300,
 		},
 		{
 			title: 'PRICE',
-			dataIndex: 'budget',
+			dataIndex: 'PRICE',
 			class: 'font-semibold text-muted',
 		},
 		{
 			title: 'STATUS',
-			dataIndex: 'status',
+			dataIndex: 'STATUS',
 			class: 'font-semibold text-muted text-sm',
 		},
 		{
 			title: 'POSTED ON',
 			scopedSlots: { customRender: 'completion' },
-			dataIndex: 'completion',
+			dataIndex: 'POSTED ON ',
 		},
 		{
 			title: '',
@@ -151,6 +150,8 @@
 		components: {
 			CardAuthorTable,
 			CardProjectTable2,
+			 CardProductTable 
+
 		},
 		data() {
 			return {
@@ -165,6 +166,7 @@
 
 				// Associating "Projects" table columns with its corresponding property.
 				table2Columns: table2Columns,
+				
 			}
 		},
 	})
