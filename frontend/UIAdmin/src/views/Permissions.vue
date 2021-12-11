@@ -15,10 +15,10 @@
 			<a-col :span="24" class="mb-24">
 
 				<!-- Projects Table Column -->
-				<CardProductTable
+				<CardPermission
 					:data="table2Data"
-					:columns="tableColumns"
-				></CardProductTable>
+					:columns="table2Columns"
+				></CardPermission>
 				<!-- / Projects Table Column -->
 
 			</a-col>
@@ -34,17 +34,14 @@
 
 	// "Authors" table component.
 	
-
-
-	import CardProductTable from "../components/Cards/CardproductTable.vue";
-	
+    import CardPermission from '../components/Cards/CardPermission.vue';	
 	// "Authors" table list of columns and their properties.
 
 
 	
 	
 	// "Projects" table list of columns and their properties.
-	const tableColumns = [
+	const table2Columns = [
 		{
 			title: 'PRODUCT NAME',
 			dataIndex: 'PRODUCT NAME',
@@ -147,7 +144,7 @@
 
 	export default ({
 		components: {
-			 CardProductTable 
+			CardPermission
 
 		},
 		data() {
@@ -162,12 +159,11 @@
 				table2Data: table2Data,
 
 				// Associating "Projects" table columns with its corresponding property.
-				tableColumns: tableColumns,
+				table2Columns: table2Columns,
 				
 			}
 		},
 	})
-
 
 </script>
 

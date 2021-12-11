@@ -1,50 +1,33 @@
-<!-- 
-	This is the tables page, it uses the dashboard layout in: 
-	"./layouts/Dashboard.vue" .
- -->
 
 <template>
 	<div>
 
-		<!-- / Authors Table -->
 
-		<!-- Projects Table -->
 		<a-row :gutter="24" type="flex">
 
-			<!-- Projects Table Column -->
 			<a-col :span="24" class="mb-24">
 
-				<!-- Projects Table Column -->
-				<CardProductTable
+				<CardStaff
 					:data="table2Data"
-					:columns="tableColumns"
-				></CardProductTable>
-				<!-- / Projects Table Column -->
+					:columns="table2Columns"
+				></CardStaff>
 
 			</a-col>
-			<!-- / Projects Table Column -->
 
 		</a-row>
-		<!-- / Projects Table -->
 
 	</div>
 </template>
 
 <script>
 
-	// "Authors" table component.
 	
-
-
-	import CardProductTable from "../components/Cards/CardproductTable.vue";
-	
-	// "Authors" table list of columns and their properties.
+	import CardStaff from "../components/Cards/CardStaff.vue"
 
 
 	
 	
-	// "Projects" table list of columns and their properties.
-	const tableColumns = [
+	const table2Columns = [
 		{
 			title: 'PRODUCT NAME',
 			dataIndex: 'PRODUCT NAME',
@@ -147,7 +130,7 @@
 
 	export default ({
 		components: {
-			 CardProductTable 
+			CardStaff
 
 		},
 		data() {
@@ -162,12 +145,11 @@
 				table2Data: table2Data,
 
 				// Associating "Projects" table columns with its corresponding property.
-				tableColumns: tableColumns,
+				table2Columns: table2Columns,
 				
 			}
 		},
 	})
-
 
 </script>
 

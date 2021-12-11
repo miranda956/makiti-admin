@@ -15,10 +15,10 @@
 			<a-col :span="24" class="mb-24">
 
 				<!-- Projects Table Column -->
-				<CardProductTable
+				<CardTikets
 					:data="table2Data"
-					:columns="tableColumns"
-				></CardProductTable>
+					:columns="table2Columns"
+				></CardTikets>
 				<!-- / Projects Table Column -->
 
 			</a-col>
@@ -33,10 +33,8 @@
 <script>
 
 	// "Authors" table component.
-	
-
-
-	import CardProductTable from "../components/Cards/CardproductTable.vue";
+    import CardTikets from "../components/Cards/CardTickets.vue";
+	// "Projects" table component.
 	
 	// "Authors" table list of columns and their properties.
 
@@ -44,7 +42,7 @@
 	
 	
 	// "Projects" table list of columns and their properties.
-	const tableColumns = [
+	const table2Columns = [
 		{
 			title: 'PRODUCT NAME',
 			dataIndex: 'PRODUCT NAME',
@@ -147,7 +145,7 @@
 
 	export default ({
 		components: {
-			 CardProductTable 
+			CardTikets 
 
 		},
 		data() {
@@ -162,12 +160,11 @@
 				table2Data: table2Data,
 
 				// Associating "Projects" table columns with its corresponding property.
-				tableColumns: tableColumns,
+				table2Columns: table2Columns,
 				
 			}
 		},
 	})
-
 
 </script>
 

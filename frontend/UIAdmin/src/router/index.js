@@ -50,7 +50,30 @@ let routes = [
 		component: () => import('../views/customers.vue'),
 
 	},
-	
+	{
+		path: '/tickets',
+		name: 'tickets',
+		layout: "dashboard",
+		// @ts-ignore
+		component: () => import('../views/tickets.vue'),
+
+	},
+	{
+		path: '/Roles',
+		name: 'Roles',
+		layout: "dashboard",
+		// @ts-ignore
+		component: () => import('../views/Roles.vue'),
+
+	},
+	{
+		path: '/Permission',
+		name: 'Permission',
+		layout: "dashboard",
+		// @ts-ignore
+		component: () => import('../views/Permissions.vue'),
+
+	},
 	{
 		path: '/Shops',
 		name: 'Shops',
@@ -80,7 +103,7 @@ let routes = [
 	name: 'Staff',
 	layout: "dashboard",
 	// @ts-ignore
-	component: () => import('../views/Liststaff.vue')
+	component: () => import('../views/Staff.vue')
 },
 	
 {path: '/addShop',
@@ -121,6 +144,12 @@ name: 'NewStaff',
 layout: "dashboard",
 // @ts-ignore
 component: () => import('../views/Newstaff.vue')
+},
+{path: '/Roles',
+name: 'Roles',
+layout: "dashboard",
+// @ts-ignore
+component: () => import('../views/Roles.vue')
 },
 {
 		path: '/Profile',

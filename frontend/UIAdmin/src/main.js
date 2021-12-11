@@ -7,12 +7,14 @@ import App from './App.vue'
 import DefaultLayout from './layouts/Default.vue'
 import DashboardLayout from './layouts/Dashboard.vue'
 import DashboardRTLLayout from './layouts/DashboardRTL.vue'
-import router from './router'
-// import './plugins/click-away'
+import router from './router';
 
 import './scss/app.scss';
 
 Vue.use(Antd);
+Vue.use(VueComp);
+
+
 
 Vue.config.productionTip = false
 

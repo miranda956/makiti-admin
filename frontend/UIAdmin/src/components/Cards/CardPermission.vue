@@ -5,11 +5,12 @@
 		<template #title>
 			<a-row type="flex" align="middle">
 				<a-col :span="24" :md="12">
-					<h5 class="font-semibold m-0">PRODUCTS</h5>
+					<h5 class="font-semibold m-0">PERMISSIONS</h5>
 				</a-col>
 				<a-col :span="24" :md="12" style="display: flex; align-items: center; justify-content: flex-end">
-	</a-col>
-                			<div class="input-group">
+					
+				</a-col>
+				<div class="input-group">
   <div class="form-outline">
     <input id="search-input" type="search" class="form-control" />
     <label class="form-label" for="form1">Search</label>
@@ -20,8 +21,7 @@
 </div>
 			</a-row>
 		</template>
-		<a-table :columns="columns" :data-source="data" :pagination="true">
-
+		<a-table :columns="columns" :data-source="data" :pagination="false">
 			<template slot="name" slot-scope="text">
 				<a>{{ text }}</a>
 			</template>
