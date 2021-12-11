@@ -52,11 +52,11 @@ let routes = [
 	},
 	
 	{
-		path: '/listShops',
-		name: 'listShop',
+		path: '/Shops',
+		name: 'Shops',
 		layout: "dashboard",
 		// @ts-ignore
-		component: () => import('../views/listShops.vue'),
+		component: () => import('../views/Shops.vue'),
 
 	},
 	{
@@ -109,7 +109,7 @@ name: 'editStaff',
 layout: "dashboard",
 // @ts-ignore
 component: () => import('../views/editStaff.vue')
-},
+}, 
 {path: '/NewProduct',
 name: 'NewProduct',
 layout: "dashboard",
@@ -166,6 +166,7 @@ routes = routes.map( ( route ) => addLayoutToRoute( route ) ) ;
 
 const router = new VueRouter({
 	mode: 'hash',
+	
 	// @ts-ignore
 	base: process.env.BASE_URL,
 	routes,
