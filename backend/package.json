@@ -13,12 +13,22 @@
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "express-rate-limit": "^5.5.1",
+    "express-validator": "^6.14.0",
     "express-winston": "^4.2.0",
+    "helmet": "^4.6.0",
     "method-override": "^3.0.0",
-    "multer": "^1.4.3",
+    "moment": "^2.29.1",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.4",
+    "pdf-creator-node": "^2.2.4",
+    "rethinkdb": "^2.4.2",
+    "thinky": "^2.3.9",
     "winston": "^3.3.3",
-    "winston-express-middleware": "^0.1.0"
+    "winston-express-middleware": "^0.1.0",
+    "xss-clean": "^0.1.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
