@@ -58,7 +58,7 @@ model.getPosts = function (callback) {
     });
 }
 
-model.saveaPost = function (posts, callback) {
+model.savePost = function (posts, callback) {
     r.connect(config.database).then(function(conn) {
         r.table(POSTS_TABLE).insert(posts).run(conn).then(function(results) {
             callback(true, results);

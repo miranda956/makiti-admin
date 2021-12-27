@@ -12,7 +12,7 @@ services:
 
   
 
-  vue:
+  vue: 
     build:
       context: "vue/"
     image: vue-app

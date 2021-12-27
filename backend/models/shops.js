@@ -73,7 +73,7 @@ model.saveShop = function (shop, callback) {
 model.updateShop = function (shop, field, callback) {
     r.connect(config.database).then(function(conn) {
         r.table(SHOPS_TABLE).get(shop.id).update(function(shop) {
-            return r.object(field, movie(field).add(1)); 
+            return r.object(field, shop(field).add(1)); 
         }).run(conn).then(function(results) {
            callback(true, results);
         }).error(function(error) {

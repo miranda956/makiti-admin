@@ -1,165 +1,141 @@
 // @ts-nocheck
 'use strict';
+let model =require("../models/post")
+let categoryModel =require("../models/categories")
 
-const r = require( 'rethinkdb' );
-const router = require( 'express' ).Router();
-const connect = require( '../lib/connects' );
-var databaseName = process.env.RDB_DATABASE;
-var tableName="Category"
-var posts ="Products"
-router.post( '/api/v1/category', ( request, response ) => {
-    let Category = Object.assign( {}, {
-        'categoryName': request.body.categoryName,
-        'categoryType': request.body.categoryType
-    } );
-
-    r.db( databaseName ).table(tableName )
-        .insert( Category)
-        .run( request._rdb )
-        .then( cursor => cursor.toArray() )
-        .then( result => {
-            response.send( result );
-        } )
-        .catch( error => response.send( error ) );
-} );
-
-router.get( '/api/v1/category', ( request, response ) => {
-    r.db( databaseName ).table( tableName)
-        .run( request._rdb )
-        .then( cursor => cursor.toArray() )
-        .then( result => {
-            response.send( result );
-        } )
-        .catch( error => response.send( error ) );
-} );
-
-router.put( '/api/v1/category/:id', ( request, response ) => {
-    let category_id = request.params.category_id;
-
-    r.db( databaseName).table( tableName )
-        .get(category_id  )
-        .update( {
-        'categoryName': request.body.categoryName,
-        'categoryType': request.body.categoryType
-        } )
-        .run( request._rdb )
-        .then( cursor => cursor.toArray() )
-        .then( result => {
-            response.send( result );
-        } )
-        .catch( error => response.send( error ) );
-} );
-
-router.delete( '/api/v1/category/:id', ( request, response ) => {
-    let category_id = request.params.category_id;
-
-    r.db( databaseName).table( tableName )
-        .get( category_id )
-        .delete()
-        .run( request._rdb )
-        .then( cursor => cursor.toArray() )
-        .then( result => {
-            response.send( result );
-        } )
-        .catch( error => response.send( error ) );
-} );
-
-
-
-router.post('/api/v1/post', (request,response ) => {
-    let post ={
-        name: request.body.name,
-        description: request.body.description,
-        ccode:request.body.ccode,
-        phone:request.body.phone,
-        email:request.body.email,
-        address:request.body.address,
-        location:request.body.location,
-        "shop-number":generateUniqueString(),
-        status:req.body.status,
-       
-        
-    };
-  
-    r.db(databaseName ).table("products")
-        .insert(post)
-        .run(request._rdb)
-        .then(cursor => cursor.toArray())
-        .then( result => {
-            // logic if you want to set
+module.exports=(app)=>{
+    app.get('/api/v1/posts',(req,res)=>{
+        model.getPosts((result)=>{
+            res.json(result)
         })
-        .catch(error => console.log(error));
-
-    // response
-    let data = {
-        'success': true,
-        'message': "Shop successfully added",
-    };
-    response.json(data);
-});
-
-/* get all shops */
-router.get('/api/v1/shop', (request,response ) => {
-
-    r.db(databaseName).table('shops')
-        .orderBy(r.desc("id"))
-        .run(request._rdb)
-        .then(cursor => cursor.toArray())
-        .then(result => {
-            // logic if you want to set
-            response.json(result);
+    })
+    
+    app.get('/api/v1/categories',(req,res)=>{
+        categoryModel.getCategories((result)=>{
+            res.json(result)
         })
-        .catch( error => console.log(error));
-});
+    })
+    
+    app.post("/api/v1/post",(req,res)=>{
+        let post  ={
+            title: request.body.name,
+            description: request.body.description,
+            ccode:request.body.ccode,
+            phone:request.body.phone,
+            email:request.body.email,
+            address:request.body.address,
+            location:request.body.location,
+            status:req.body.status,
+            shops:[
+    
+            ]
+           
+            
+        }
 
-router.get('/api/v1/shop/:id',(request,response)=>{
-    let shop_id = request.params.shop_id;
-    r.db(databaseName).table( 'shops' )
-    .get( shop_id )
-    .run(request._rdb)
-    then(cursor => cursor.toArray())
-        .then(result => {
-            response.json(result);
-        }).catch(erro=> console.log(error))
+        model.savePost(post,(sucess,result)=>{
+            if(sucess){
+                res.json({
+                    status:"OK"
+                })
+            }else{
+                res.json({
+                    status:'Error'
+                })
+            }
+        })
+    })
 
-})
-router.put( '/shop/:shop_id', ( request, response ) => {
-    let shop_id = request.params.shop_id;
+    app.post("/api/v1/catagory",(req,res)=>{
+        let category={
+            categoryName:req.body.categoryName,
+            categoryType:req.body.categoryType
+            
+        }
 
-    r.db(databaseName).table( 'shops' )
-        .get( shop_id )
-        .update( {
-        name: request.body.name,
-        description: request.body.description,
-        ccode:request.body.ccode,
-        phone:request.body.phone,
-        email:request.body.email,
-        address:request.body.address,
-        location:request.body.location,
-        status:req.body.status,
+        categoryModel.saveCategory(category,(success,result)=>{
+            if(success){
+                res.json({
+                    status:"OK"
+                })
 
-        } )
-        .run( request._rdb )
-        .then( cursor => cursor.toArray() )
-        .then( result => {
-            response.send( result );
-        } )
-        .catch( error => response.send( error ) );
-} );
+            }else{
+                res.json({
+                    status:'Error'
+                })
+            }
 
-router.delete( '/api/shop/:shop_id', ( request, response ) => {
-    let shop_id = request.params.shop_id;
+        })
+    })
+    
 
-    r.db( databaseName).table( 'shops' )
-        .get( shop_id )
-        .delete()
-        .run( request._rdb )
-        .then( cursor => cursor.toArray() )
-        .then( result => {
-            response.send( result );
-        } )
-        .catch( error => response.send( error ) );
-} );
+    app.get("/api/v1/post/:id",(req,res)=>{
+        let post ={
+            id:req.params.id
+        }
+        model.getPosts(post,(result)=>{
+            res.json(result)
+        })
+
+    })
+
+    app.get("/api/v1/cat/:id",(req,res)=>{
+        let cat ={
+            id:req.params.id
+        }
+        categoryModel.getCategories(cat,(result)=>{
+            res.json(result)
+        })
+    })
+
+    app.put("/api/v1/post/:id",(req,res,)=>{
+        let post= {
+            title: request.body.name,
+            description: request.body.description,
+            ccode:request.body.ccode,
+            phone:request.body.phone,
+            email:request.body.email,
+            address:request.body.address,
+            location:request.body.location,
+            status:req.body.status,
+            shops:[
+    
+            ]
+           
+            
+        }
+        model.updateShop(post, (success, result) => {
+            if (success) {
+                res.json({
+                    status: 'OK'
+                })
+            } else {
+                res.json({
+                    status: 'Error'
+                })
+            }
+        })
+    })
+    app.put("/api/v1/cat/:id",(req,res,)=>{
+        let cat= {
+            categoryName:req.body.categoryName,
+            categoryType:req.body.categoryType
+         
+        }
+        model.updateShop(cat, (success, result) => {
+            if (success) {
+                res.json({
+                    status: 'OK'
+                })
+            } else {
+                res.json({
+                    status: 'Error'
+                })
+            }
+        })
+    })
+    
 
 
-module.exports = router;
+
+}
