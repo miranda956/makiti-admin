@@ -7,9 +7,8 @@ const bodyParser = require( 'body-parser' );
 const cors = require( 'cors' );
 const helmet = require( 'helmet' );
 require( 'dotenv' ).config();
-const expressValidator = require('express-validator')
 const app = express();
-app.use(expressValidator())
+
 app.use( logger( 'dev' ) );
 app.use( bodyParser.urlencoded( {
     extended: false
@@ -19,28 +18,24 @@ app.use( cors() );
 app.use( helmet() );
 
 
-const connect = require( './lib/connects' );
-const users = require( './routes/users' );
-const tickets = require( './routes/tickets' );
-const uploads = require( './routes/uploads' );
-const permissions = require( './routes/permissions' );
-const Roles = require( './routes/Roles' );
-const leads = require( './routes/leads' );
-const opportunity = require( './routes/opportunity' );
-const customers = require( './routes/customers' );
-const invoice = require( './routes/invoices' );
-const contacts = require( './routes/contacts' );
-const analytics = require( './routes/analytics' );
-const catalog = require( './routes/catalog' );
-const shops = require( './routes/shops' );
-const messaging = require( './routes/messaging' );
+//require( './routes/users' )(app);
+//require( './routes/tickets' )(app);
+//require( './routes/uploads' )(app);
+//require( './routes/permissions' )(app);
+//require( './routes/Roles' )(app);
+//require( './routes/leads' )(app);
+//require( './routes/opportunity' )(app);
+//require( './routes/customers' )(app);
+//require( './routes/invoices' )(app);
+//require( './routes/contacts' )(app);
+//require( './routes/analytics' )(app);
+require( './routes/catalog' )(app);
+require( './routes/shops' )(app);
+//require( './routes/messaging' )(app);
 
 
 
 
-app.use( connect.connect );
-app.use( '/', users );
-app.use( connect.close );
 
 app.use( ( error, request, response, next ) => {
     response.status( error.status || 500 );
@@ -55,9 +50,9 @@ app.use( ( request, response, next ) => {
     response.json( error );
 } );
 
-var server = app.listen( 5000, function() {
-    var host = server.address().address;
-    var port = server.address().port;
+const PORT = process.env.port || 5000
+ app.listen( PORT, function() {
 
-    console.log( 'App is listening on http://%s:%s', host, port );
+
+    console.log( `server listening on ${PORT}` );
 } );
