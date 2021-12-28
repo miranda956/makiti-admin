@@ -1,13 +1,14 @@
 'use strict';
 
 let model = require("../models/staff");
+var r = require('rethinkdb');
 
 const { getToken, isAuth } = require('../utils');
 module.exports=(app)=>{
 
     app.post('/api/v1/login', async (req, res) => {
         const signinUser = r.table("Staff")
-        .pluck("user_id", "name")
+        .pluck("_id":req.body.id, "name")
         if (signinUser) {
           res.send({
             _id: signinUser.id,

@@ -26,3 +26,5 @@ add docker volumes for persistant data
 2. roles apis 
 
 3. analytics apis 
+
+4. reset password email dispatcher 

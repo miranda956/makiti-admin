@@ -1,85 +1,31 @@
 // @ts-nocheck
-var model = module.exports;
-var r = require('rethinkdb');
-var config = require('../config/config');
-
-var POSTS_TABLE = 'Posts';
-
-model.setup = function (callback) {
-    console.log("Setting up RethinkDB...");
+var thinky = require('thinky')();
+var {type}   = thinky;
+var shop= require('./shops');
+var cat =require('./categories');
+// Create a model - the table is automatically created
+var Post= thinky.createModel("Post", {
+    id:type.String(), 
+    title:type.String(),
+    description:type.String(),
+    plan:type.String(),
+    price:type.Number(),
+    negotiable:type.Boolean(),
+    catId:String,
+    created:Date.now(),
+    shopId:type.string(),
+    address:type.string(),
+    unused:type.Boolean(),
+    "last-touch":type.Date(),
+    location:type.string(),
+    audioId:type.string(),
     
-    r.connect(config.database).then(function(conn) {
-        // Does the database exist?
-        r.dbCreate(config.database.db).run(conn).then(function(result) {
-            console.log("Database created...");
-        }).error(function(error) {
-            console.log("Database already created...");
-        }).finally(function() {
-            // Does the table exist?
-            r.table(POSTS_TABLE).limit(1).run(conn, function(error, cursor) {
-                var promise;
-                if (error) {
-                    console.log("Creating table...");
-                    promise = r.tableCreate(POSTS_TABLE).run(conn);
-                } else {    
-                    promise = cursor.toArray();
-                }
+  }); 
+  
+  Post.belongsTo(shop, "shop", "shopId", "id");
+  Post.belongsTo(cat, "cat", "catId", "id");
 
-                // The table exists, setup the update listener
-                promise.then(function(result) {
-                    console.log("Setting up update listener...");
-                    r.table(POSTS_TABLE).changes().run(conn).then(function(cursor) {
-                        cursor.each(function(error, row) {
-                            callback(row);
-                        });
-                    });
-                }).error(function(error) {
-                    throw error;
-                });
-            });
-        });
-    }).error(function(error) {
-        throw error;
-    });
-}
+  
+  module.exports= Post;
 
-model.getPosts = function (callback) {
-    r.connect(config.database).then(function(conn) {
-        r.table(POSTS_TABLE).run(conn).then(function(cursor) {
-            cursor.toArray(function(error, results) {
-                if (error) throw error;
-                callback(results);
-            });
-        }).error(function(error) {
-            throw error;
-        });
-    }).error(function(error) {
-        throw error;
-    });
-}
 
-model.savePost = function (posts, callback) {
-    r.connect(config.database).then(function(conn) {
-        r.table(POSTS_TABLE).insert(posts).run(conn).then(function(results) {
-            callback(true, results);
-        }).error(function(error) {
-            callback(false, error);
-        });
-    }).error(function(error) {
-        callback(false, error);
-    });
-}
-
-model.updatePost = function (post, field, callback) {
-    r.connect(config.database).then(function(conn) {
-        r.table(POSTS_TABLE).get(post.id).update(function(post) {
-            return r.object(field, post(field).add(1)); 
-        }).run(conn).then(function(results) {
-           callback(true, results);
-        }).error(function(error) {
-            callback(false, error);
-        });
-    }).error(function(error) {
-        callback(false, error);
-    });
-}

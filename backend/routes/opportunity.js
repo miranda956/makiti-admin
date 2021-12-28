@@ -6,17 +6,7 @@ const router = require( 'express' ).Router();
 const connect = require( '../lib/connects' );
 var databaseName = process.env.RDB_DATABASE;
 
-function generateUniqueString() {
-    var ts = String(new Date().getTime()),
-        i = 0,
-        out = '';
 
-    for (i = 0; i < ts.length; i += 2) {
-        out += Number(ts.substr(i, 2)).toString(36);
-    }
-
-    return ('prefix' + out);
-}
 
 router.post('/api/v1/shop', (request,response ) => {
     let shop ={
@@ -33,7 +23,7 @@ router.post('/api/v1/shop', (request,response ) => {
         
     };
   
-    r.db(databaseName ).table("shops")
+    r.db(databaseName ).table("opportunity")
         .insert(shop)
         .run(request._rdb)
         .then(cursor => cursor.toArray())
