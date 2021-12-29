@@ -11,22 +11,28 @@ module.exports=(app)=>{
 
     app.get("/api/v1/posts",(req,res,next)=>{
      r.db(db.database.db).r.table("Post")
-     .then((posts)=>{
-         res.json(posts)
-     }).catch((err)=>{
-        next(err)
+     .run(conn,function(err,result){
+         if(err){
+             throw err
+         } else{
+             res.status(202).json(result)
+         }
      })
+     
 
 
     })
    
     app.get("/api/v1/categories",(req,res,next)=>{
         r.db(db.database.db).r.table("Category")
-        .then((cats)=>{
-            res.json(cats)
-        }).catch((err)=>{
-            next(err)
+        .run(conn,function(err,result){
+            if(err){
+                throw err
+            } else{
+                res.status(202).json(result)
+            }
         })
+        
     })
 
     app.post("/api/v1/post",(req,res,next)=>{
