@@ -1,44 +1,45 @@
 // @ts-nocheck
-'use strict';
 
-const r = require( 'rethinkdb' );
-const router = require( 'express' ).Router();
-const connect = require( '../lib/connects' );
-var databaseName = process.env.RDB_DATABASE;
-router.get('/api/v1/tickets', (request,response ) => {
 
-    r.db(databaseName).table('Tickets')
-        .orderBy(r.desc("id"))
-        .run(request._rdb)
-        .then(cursor => cursor.toArray())
-        .then(result => {
-            // logic if you want to set
-            response.json(result);
+"use strict";
+
+const RethinkDB = require("rethinkdb")
+const r = RethinkDB()                 
+const conn = r.connect()  
+let db = require("../config/config")
+
+
+module.exports=(app)=>{
+
+    app.get('/api/v1/tickets',(req,res)=>{
+        r.db(db.database.db).r.table("Tickets").pluck("ticketId", "email","phone","CreatedDate","status")
+        .run(conn,function(err,result){
+            if(err){
+                throw err
+            } else{
+                res.status(202).json(result)
+            }
         })
-        .catch( error => console.log(error));
-});
+    })
 
-router.get('/api/v1/tickets/:id',(request,response)=>{
-    let Tickets_id = request.params.Tickets_id;
-    r.db(databaseName).table( 'Tickets' )
-    .get( Tickets_id )
-    .run(request._rdb)
-    then(cursor => cursor.toArray())
-        .then(result => {
-            response.json(result);
-        }).catch(erro=> console.log(error))
+    app.get("/api/v1/ticket/:id",(req,res,next)=>{
+  
+        r.db(db.database.db).r.table("Ticket").pluck("ticketId", "email","phone","CreatedDate","status").filter({
+            id:req.params.id
+        }).run(conn,function(err,result){
+        if(err){
+            throw err
+        } else{
+            res.status(201).json(result)
+        }
+        })
+    })
+    
 
-})
-router.delete( '/api/tickets/:ticket_id', ( request, response ) => {
-    let ticket_id = request.params.ticket_id;
 
-    r.db( databaseName).table( 'Tickets' )
-        .get( ticket_id )
-        .delete()
-        .run( request._rdb )
-        .then( cursor => cursor.toArray() )
-        .then( result => {
-            response.send( result );
-        } )
-        .catch( error => response.send( error ) );
-} );
+
+
+
+    
+
+}

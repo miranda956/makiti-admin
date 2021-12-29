@@ -21,10 +21,8 @@ todo
 
 add docker volumes for persistant data
 
-1. complete the invoice apis 
 
-2. roles apis 
 
-3. analytics apis 
+1. analytics apis 
 
-4. reset password email dispatcher 
+2. reset password email dispatcher 
