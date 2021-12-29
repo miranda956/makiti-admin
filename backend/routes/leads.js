@@ -1,116 +1,121 @@
 // @ts-nocheck
-'use strict';
+"use strict";
 
-const r = require( 'rethinkdb' );
-const router = require( 'express' ).Router();
-const connect = require( '../lib/connects' );
-var databaseName = process.env.RDB_DATABASE;
 
-function generateUniqueString() {
-    var ts = String(new Date().getTime()),
-        i = 0,
-        out = '';
+const RethinkDB = require("rethinkdb")
+ const r = RethinkDB()                 
+ const conn = r.connect()  
+let db = require("../config/config")
 
-    for (i = 0; i < ts.length; i += 2) {
-        out += Number(ts.substr(i, 2)).toString(36);
-    }
+module.exports=(app)=>{
 
-    return ('prefix' + out);
-}
+    app.post("/api/v1/lead",(req,res,next)=>{
 
-router.post('/api/v1/shop', (request,response ) => {
-    let shop ={
-        name: request.body.name,
-        description: request.body.description,
-        ccode:request.body.ccode,
-        phone:request.body.phone,
-        email:request.body.email,
-        address:request.body.address,
-        location:request.body.location,
-        "shop-number":generateUniqueString(),
-        status:req.body.status,
-       
-        
-    };
+        let  lead ={
+            name:req.body.name,
+            phone:req.body.phone,
+            email:req.body.email,
+            city:req.body.city,
+            street:req.body.street,
+            zipcode:req.body.zipcode,
+            website:req.body.website,
+            interestedIn:req.body.interestedIn,
+            source:req.body.source,
+            assignedTo:req.body.assignedTo,
+            status:req.body.status
+
+        }
+       r.db(db.database.db).r.table("Leads").insert(lead).run(conn, function(err, result){
+           if(err){
+               throw err
+           }
+           else{
+               res.status(204).send({
+                   msg:"post created successfully"
+               })
+           }
+       }
+
+       )
+
+
+    })
+    app.get('/api/v1/leads',(req,res)=>{
+        r.db(db.database.db).r.table("Leads").pluck("phone","email","assignedTo","status","source")
+        .run(conn,function(err,result){
+            if(err){
+                throw err
+            } else{
+                res.status(202).json(result)
+            }
+        })
+    })
+
+
+    app.get("/api/v1/leads/:id",(req,res,next)=>{
   
-    r.db(databaseName ).table("shops")
-        .insert(shop)
-        .run(request._rdb)
-        .then(cursor => cursor.toArray())
-        .then( result => {
-            // logic if you want to set
+        r.db(db.database.db).r.table("Lead").pluck("phone","email","assignedTo","status","source").filter({
+            id:req.params.id
+        }).run(conn,function(err,result){
+        if(err){
+            throw err
+        } else{
+            res.status(201).json(result)
+        }
         })
-        .catch(error => console.log(error));
+    })
 
-    // response
-    let data = {
-        'success': true,
-        'message': "Shop successfully added",
-    };
-    response.json(data);
-});
+    app.patch("/api/v1/lead/:id",(req,res)=>{
+        r.db(db.database.db).r.table("Lead").filter(
+            r.row("name","phone","email","city","street","zipcode","website","interstedIn","source","assignedTo","status")
+        .update({
 
-/* get all shops */
-router.get('/api/v1/shop', (request,response ) => {
+            name:req.body.name,
+            phone:req.body.phone,
+            email:req.body.email,
+            city:req.body.city,
+            street:req.body.street,
+            zipcode:req.body.zipcode,
+            website:req.body.website,
+            interestedIn:req.body.interestedIn,
+            source:req.body.source,
+            assignedTo:req.body.assignedTo,
+            status:req.body.status
 
-    r.db(databaseName).table('shops')
-        .orderBy(r.desc("id"))
-        .run(request._rdb)
-        .then(cursor => cursor.toArray())
-        .then(result => {
-            // logic if you want to set
-            response.json(result);
+
+            }) ).run(conn,function(err,result){
+                if(err){
+                    throw err
+                } else{
+                    res.status(204).send({
+                msg:"Post updated successfully"
+                    })
+                }
+            })
         })
-        .catch( error => console.log(error));
-});
 
-router.get('/api/v1/shop/:id',(request,response)=>{
-    let shop_id = request.params.shop_id;
-    r.db(databaseName).table( 'shops' )
-    .get( shop_id )
-    .run(request._rdb)
-    then(cursor => cursor.toArray())
-        .then(result => {
-            response.json(result);
-        }).catch(erro=> console.log(error))
 
-})
-router.put( '/shop/:shop_id', ( request, response ) => {
-    let shop_id = request.params.shop_id;
 
-    r.db(databaseName).table( 'shops' )
-        .get( shop_id )
-        .update( {
-        name: request.body.name,
-        description: request.body.description,
-        ccode:request.body.ccode,
-        phone:request.body.phone,
-        email:request.body.email,
-        address:request.body.address,
-        location:request.body.location,
-        status:req.body.status,
+        app.delete("/api/v1/lead/:id",(req,res)=>{
+            r.db(db.database.db).r.table("Lead")
+            .filter({
+                id:req.params.id
+            })
+            .delete().run(conn,function(err,result){
+                if(err){
+                    throw err;
 
-        } )
-        .run( request._rdb )
-        .then( cursor => cursor.toArray() )
-        .then( result => {
-            response.send( result );
-        } )
-        .catch( error => response.send( error ) );
-} );
+                }else{
+                    res.status(202).send({
+                        msg:"Deleted successfully"
+                    })
+                }
+            })
+        })
 
-router.delete( '/api/shop/:shop_id', ( request, response ) => {
-    let shop_id = request.params.shop_id;
 
-    r.db( databaseName).table( 'shops' )
-        .get( shop_id )
-        .delete()
-        .run( request._rdb )
-        .then( cursor => cursor.toArray() )
-        .then( result => {
-            response.send( result );
-        } )
-        .catch( error => response.send( error ) );
-} );
 
-module.exports = router;
+
+
+
+}

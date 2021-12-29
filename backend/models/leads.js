@@ -4,6 +4,7 @@ var {type}  = thinky;
 var Leads =thinky.createModel("",{
 id:type.String(),
 name:type.string(),
+email:type.string().isemail(),
 phone:type.Number(),
 city:type.string(),
 street:type.string(),
