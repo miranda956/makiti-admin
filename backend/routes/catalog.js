@@ -1,140 +1,185 @@
 // @ts-nocheck
 'use strict';
-let model =require("../models/post")
-let categoryModel =require("../models/categories")
+
+
+const RethinkDB = require("rethinkdb")
+ const r = RethinkDB()                 
+ const conn = r.connect()  
+let db = require("../config/config")
 
 module.exports=(app)=>{
-    app.get('/api/v1/posts',(req,res)=>{
-        model.getPosts((result)=>{
-            res.json(result)
+
+    app.get("/api/v1/posts",(req,res,next)=>{
+     r.db(db.database.db).r.table("Post")
+     .then((posts)=>{
+         res.json(posts)
+     }).catch((err)=>{
+        next(err)
+     })
+
+
+    })
+   
+    app.get("/api/v1/categories",(req,res,next)=>{
+        r.db(db.database.db).r.table("Category")
+        .then((cats)=>{
+            res.json(cats)
+        }).catch((err)=>{
+            next(err)
         })
     })
-    
-    app.get('/api/v1/categories',(req,res)=>{
-        categoryModel.getCategories((result)=>{
-            res.json(result)
-        })
-    })
-    
-    app.post("/api/v1/post",(req,res)=>{
-        let post  ={
-            title: request.body.name,
-            description: request.body.description,
-            ccode:request.body.ccode,
-            phone:request.body.phone,
-            email:request.body.email,
-            address:request.body.address,
-            location:request.body.location,
-            status:req.body.status,
-            shops:[
-    
-            ]
-           
-            
+
+    app.post("/api/v1/post",(req,res,next)=>{
+
+        let  post ={
+            title:req.body.title,
+            description:req.body.description,
+            plan:req.body.plan,
+            price:req.body.price,
+            negotiable:req.body.negotiable,
+            address:req.body.address,
+            location:req.body.location,
+            unused:req.body.unused
+
+
         }
+       r.db(db.database.db).r.table("Post").insert(post).run(conn, function(err, result){
+           if(err){
+               throw err
+           }
+           else{
+               res.status(204).send({
+                   msg:"post created successfully"
+               })
+           }
+       }
 
-        model.savePost(post,(sucess,result)=>{
-            if(sucess){
-                res.json({
-                    status:"OK"
-                })
-            }else{
-                res.json({
-                    status:'Error'
-                })
-            }
-        })
+       )
+
+
     })
 
-    app.post("/api/v1/catagory",(req,res)=>{
-        let category={
+    app.post("/api/v1/cat",(req,res,next)=>{
+
+        let newCat ={
+
             categoryName:req.body.categoryName,
             categoryType:req.body.categoryType
-            
+
         }
 
-        categoryModel.saveCategory(category,(success,result)=>{
-            if(success){
-                res.json({
-                    status:"OK"
-                })
-
-            }else{
-                res.json({
-                    status:'Error'
+        r.db(db.database.db).r.table("Category").insert(newCat).run(conn,function(err,result){
+            if(err){
+                throw err
+            } else{
+                res.status(204).send({
+                    msg:"Category created "
                 })
             }
+        })
+    })
 
+    app.get("/api/v1/post/:id",(req,res,next)=>{
+  
+        r.db(db.database.db).r.table("Post").filter({
+            id:req.params.id
+        }).run(conn,function(err,result){
+        if(err){
+            throw err
+        } else{
+            res.status(201).json(result)
+        }
         })
     })
     
-
-    app.get("/api/v1/post/:id",(req,res)=>{
-        let post ={
-            id:req.params.id
-        }
-        model.getPosts(post,(result)=>{
-            res.json(result)
-        })
-
-    })
-
     app.get("/api/v1/cat/:id",(req,res)=>{
-        let cat ={
+        r.db(db.database.db).r.table("Category").filter({
             id:req.params.id
+        }).run(conn,function(err,result){
+        if(err){
+            throw err
+        } else{
+            res.status(201).json(result)
         }
-        categoryModel.getCategories(cat,(result)=>{
-            res.json(result)
         })
     })
 
-    app.put("/api/v1/post/:id",(req,res,)=>{
-        let post= {
-            title: request.body.name,
-            description: request.body.description,
-            ccode:request.body.ccode,
-            phone:request.body.phone,
-            email:request.body.email,
-            address:request.body.address,
-            location:request.body.location,
-            status:req.body.status,
-            shops:[
-    
-            ]
-           
-            
-        }
-        model.updateShop(post, (success, result) => {
-            if (success) {
-                res.json({
-                    status: 'OK'
-                })
-            } else {
-                res.json({
-                    status: 'Error'
-                })
-            }
+    app.patch("/api/v1/post/:id",(req,res)=>{
+        r.db(db.database.db).r.table("Post").filter(
+            r.row("title","description","plan","price","price","negotiable","location","unused")
+        .update({
+            title:req.body.title,
+            description:req.body.description,
+            plan:req.body.plan,
+            price:req.body.price,
+            negotiable:req.body.negotiable,
+            location:req.body.location,
+            unused:req.body.unused
+            }) ).run(conn,function(err,result){
+                if(err){
+                    throw err
+                } else{
+                    res.status(204).send({
+                msg:"Post updated successfully"
+                    })
+                }
+            })
         })
-    })
-    app.put("/api/v1/cat/:id",(req,res,)=>{
-        let cat= {
-            categoryName:req.body.categoryName,
-            categoryType:req.body.categoryType
-         
-        }
-        model.updateShop(cat, (success, result) => {
-            if (success) {
-                res.json({
-                    status: 'OK'
+
+
+        app.patch("/api/v1/cat/:id",(req,res)=>{
+            r.db(db.database.db).r.table("Category").filter(
+                r.row("CategoryName","CategoryType")
+            .update({
+                  CategoryName:req.body.CategoryName,
+                  categoryType:req.body.categoryType
+                }) ).run(conn,function(err,result){
+                    if(err){
+                        throw err
+                    } else{
+                        res.status(204).send({
+                    msg:"Post updated successfully"
+                        })
+                    }
                 })
-            } else {
-                res.json({
-                    status: 'Error'
+            })
+
+            app.delete("/api/v1/post/:id",(req,res)=>{
+                r.db(db.database.db).r.table("Post")
+                .filter({
+                    id:req.params.id
                 })
-            }
-        })
-    })
-    
+                .delete().run(conn,function(err,result){
+                    if(err){
+                        throw err;
+
+                    }else{
+                        res.status(202).send({
+                            msg:"Deleted successfully"
+                        })
+                    }
+                })
+            })
+
+            app.delete("/api/v1/cat/:id",(req,res)=>{
+                r.db(db.database.db).r.table("Category")
+                .filter({
+                    id:req.params.id
+                })
+                .delete().run(conn,function(err,result){
+                    if(err){
+                        throw err;
+
+                    }else{
+                        res.status(202).send({
+                            msg:"Deleted successfully"
+                        })
+                    }
+                })
+            })
+
+
+
 
 
 

@@ -3,6 +3,7 @@ var {type}= thinky;
 
 var Role =thinky.createModel("Role",{
 id:type.String(),
+roleName:type.String(),
 
 
 })
