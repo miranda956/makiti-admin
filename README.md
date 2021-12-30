@@ -26,3 +26,5 @@ add docker volumes for persistant data
 1. analytics apis 
 
 2. reset password email dispatcher 
+
+3. deploy the backend on AWS
