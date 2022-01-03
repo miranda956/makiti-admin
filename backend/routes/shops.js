@@ -2,8 +2,8 @@
 'use strict';
 
 
-const RethinkDB = require("rethinkdb")
-const r = RethinkDB()                 
+let r = require('rethinkdb');
+             
 const conn = r.connect()  
 let db = require("../config/config")
 
@@ -18,12 +18,12 @@ function generateUniqueString() {
 
     return ('prefix' + out);
 }
-
+  
   
 
 module.exports=(app)=>{
     app.get('/api/v1/shops',(req,res)=>{
-        r.db(db.database.db).r.table("Shop")
+        r.db(db.database.db).r.table("shops")
         .run(conn,function(err,result){
             if(err){
                 throw err

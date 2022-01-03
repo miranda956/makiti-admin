@@ -35,7 +35,7 @@ module.exports=(app)=>{
   })
 
   app.get("/api/v1/staff", (req, res) => {
-    r.db(db.database.db).r.table("Staff").pluck("staffName","StaffNo","Role").
+    r.db(db.database.db).r.table("admin").pluck("name","role").
     run(conn,function(err,result){
       if(err){
         throw err

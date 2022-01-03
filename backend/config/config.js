@@ -6,7 +6,7 @@ const dotenv = require("dotenv")
 
 module.exports = {
     database: {
-        db: process.env.RDB_DB || "Makiti",
+        db: process.env.RDB_DB || "makiti",
         host: process.env.RDB_HOST || "127.0.0.1",
         port: process.env.RDB_PORT || 28015
     },

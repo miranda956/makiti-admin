@@ -17,6 +17,7 @@ contact:type.string(),
 price:type.Number(),
 planType:type.String(),
 totalAmount:type.Number(),
+expirationDate:type.Date()
 
 });
 

@@ -1,9 +1,7 @@
 // @ts-nocheck
 'use strict';
-
-
-const RethinkDB = require("rethinkdb")
- const r = RethinkDB()                 
+let r = require('rethinkdb');
+    
  const conn = r.connect()  
 let db = require("../config/config")
 
