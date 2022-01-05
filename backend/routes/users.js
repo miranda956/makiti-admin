@@ -18,7 +18,7 @@ module.exports=(app)=>{
 
     }
 
-    r.db(db.database.db).r.table("Staff").insert(newStaff).
+    r.db(db.database.db).r.table("admin").insert(newStaff).
     run(conn,function(err,result){
       if(err){
         throw err
@@ -47,7 +47,7 @@ module.exports=(app)=>{
   });
 
   app.patch("/api/v1/staff/:id",(req,res)=>{
-    r.db(db.database.db).r.table("Staff").filter(
+    r.db(db.database.db).r.table("admin").filter(
         r.row("Role")
     .update({
         Role:req.body.Role
@@ -66,7 +66,7 @@ module.exports=(app)=>{
 
 
     app.delete("/api/v1/staff/:id",(req,res)=>{
-      r.db(db.database.db).r.table("Staff")
+      r.db(db.database.db).r.table("admin")
       .filter({
           id:req.params.id
       })

@@ -49,33 +49,33 @@ export const productsActions={
 
     allProducts ({commit}) {
         commit(ALL_PRODUCTS)      
-        axios.get(`${API_BASE}/`).then(response => {
+        axios.get(`${API_BASE}/api/v1/posts`).then(response => {
         commit(ALL_PRODUCTS_SUCCESS, response.data)
         })
     },
     productById ({commit}, payload) {
         commit(PRODUCT_BY_ID)
     
-        axios.get(`${API_BASE}/${payload}`).then(response => {
+        axios.get(`${API_BASE}/api/v1/post/:id${payload}`).then(response => {
             commit(PRODUCT_BY_ID_SUCCESS, response.data)
         })
     },
     addProduct ({commit}, payload) {
         commit(ADD_PRODUCT)
-        axios.post(`${API_BASE}/`, payload).then(response => {
+        axios.post(`${API_BASE}/api/v1/post`, payload).then(response => {
             commit(ADD_PRODUCT_SUCCESS, response.data)
         })
     },
     updateProduct ({commit}, payload) {
         commit(UPDATE_PRODUCT)
         
-        axios.patch(`${API_BASE}/${payload._id}`, payload).then(response => {
+        axios.patch(`${API_BASE}/api/v1/cat/:id${payload._id}`, payload).then(response => {
             commit(UPDATE_PRODUCT_SUCCESS, response.data)
         })
     },
     removeProduct ({commit}, payload) {
         commit(REMOVE_PRODUCT)
-        axios.delete(`${API_BASE}/${payload}`, payload).then(response => {
+        axios.delete(`${API_BASE}/api/v1/post/:id${payload}`, payload).then(response => {
             console.debug('response', response.data)
             commit(REMOVE_PRODUCT_SUCCESS, response.data)
         })
@@ -88,20 +88,20 @@ export const shopActions={
 
     allShops({commit}) {
         commit(ALL_SHOPS)      
-        axios.get(`${API_BASE}/`).then(response => {
+        axios.get(`${API_BASE}/api/v1/shops`).then(response => {
         commit(ALL_SHOPS_SUCCESS, response.data)
         })
     },
     shopById ({commit}, payload) {
         commit(SHOP_BY_ID)
     
-        axios.get(`${API_BASE}//${payload}`).then(response => {
+        axios.get(`${API_BASE}/api/v1/shop/:id/${payload}`).then(response => {
             commit(SHOP_BY_ID_SUCCESS, response.data)
         })
     },
     addShop ({commit}, payload) {
         commit(ADD_SHOP)
-        axios.post(`${API_BASE}/`, payload).then(response => {
+        axios.post(`${API_BASE}/api/v1/shop`, payload).then(response => {
             commit(ADD_SHOP_SUCCESS, response.data)
         })
 
@@ -109,13 +109,13 @@ export const shopActions={
 updateShop ({commit}, payload) {
     commit(UPDATE_SHOP)
     
-    axios.patch(`${API_BASE}/${payload._id}`, payload).then(response => {
+    axios.patch(`${API_BASE}/api/v1/shop/:id${payload._id}`, payload).then(response => {
         commit(UPDATE_SHOP_SUCCESS, response.data)
     })
 },
 removeShop ({commit}, payload) {
     commit(REMOVE_SHOP)
-    axios.delete(`${API_BASE}/${payload}`, payload).then(response => {
+    axios.delete(`${API_BASE}/api/v1/shop/:id${payload}`, payload).then(response => {
         console.debug('response', response.data)
         commit(REMOVE_SHOP_SUCCESS, response.data)
     })
@@ -127,31 +127,31 @@ removeShop ({commit}, payload) {
 export const staffActions={
     allStaff({commit}) {
         commit(ALL_STAFF)      
-        axios.get(`${API_BASE}/`).then(response => {
+        axios.get(`${API_BASE}/api/v1/staff`).then(response => {
         commit(ALL_STAFF_SUCCESS, response.data)
         })
     },
     staffById ({commit}, payload) {
         commit(STAFF_BY_ID)
     
-        axios.get(`${API_BASE}/${payload}`).then(response => {
+        axios.get(`${API_BASE}/api/v1/staff/:id${payload}`).then(response => {
             commit(STAFF_BY_ID_SUCCESS, response.data)
         })
     },
     addStaff ({commit}, payload) {
         commit(ADD_STAFF)
-        axios.post(`${API_BASE}/`, payload).then(response => {
+        axios.post(`${API_BASE}/api/v1/staff`, payload).then(response => {
             commit(ADD_STAFF_SUCCESS, response.data)
         })
     },
     updateStaff({commit}, payload) {
         commit(UPDATE_STAFF)   
-        axios.patch(`${API_BASE}/${payload._id}`, payload).then(response => {
+        axios.patch(`${API_BASE}/api/v1/staff/:id/${payload._id}`, payload).then(response => {
             commit(UPDATE_STAFF_SUCESS, response.data)
         })
     },removeStaff ({commit}, payload) {
         commit(REMOVE_STAFF)
-        axios.delete(`${API_BASE}${payload}`, payload).then(response => {
+        axios.delete(`${API_BASE}/api/v1/staff/:id/${payload}`, payload).then(response => {
             console.debug('response', response.data)
             commit(REMOVE_STAFF_SUCESS, response.data)
         })
@@ -163,13 +163,13 @@ export const customersActions ={
 
     allCustomers({commit}) {
         commit(ALL_CUSTOMERS)      
-        axios.get(`${API_BASE}/`).then(response => {
+        axios.get(`${API_BASE}/api/v1/customers`).then(response => {
         commit(ALL_CUSTOMERS_SUCCESS, response.data)
         })
     },
     customerById ({commit}, payload) {
         commit(CUSTOMERS_BY_ID)
-           axios.get(`${API_BASE}/${payload}`).then(response => {
+           axios.get(`${API_BASE}/api/v1/customer/:id${payload}`).then(response => {
             commit(CUSTOMERS_BY_ID_SUCCESS, response.data)
         })
     },
